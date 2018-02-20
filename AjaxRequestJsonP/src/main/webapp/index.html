@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>Hello World!</h1>
+        <input id="clickMe" type="button" value="clickme" onclick="getData();" />
+        <script>
+
+var responseJsonp = "";
+window.callackFunction = function (data) {
+    alert(data);
+    responseJsonp += JSON.stringify(data);
+    alert("jsonp: " + responseJsonp);
+    render(responseJsonp);
+};
+
+
+function getData() {
+ var responseJsonp = "";
+    $.ajax({
+        type: "GET",
+        url: "./TestResponse.jsp",
+        dataType: "jsonp",
+        jsonpCallback: "callackFunction",
+        crossOrigin: true,
+        async: false,
+        success: function (data) {
+               
+        },
+        error: function (xhr, status, error) {
+            console.log("xhr: " + xhr);
+            console.log("status: " + status);
+            console.log("error: " + error);
+            alert("Failed");
+        }
+    });
+
+}
+
+function render(data) {
+  var url = "https://www.google.com/";
+     var jsonObj = JSON.parse(data);
+                alert(jsonObj.username);
+                if(jsonObj.username!==null && jsonObj.username!=="") {
+                   url+="search?q="+jsonObj.username+"+"+jsonObj.City+"+"+jsonObj.Country; 
+                    window.open(url, "_blank");
+                }
+}
+        </script>
+    </body>
+
+</html>
